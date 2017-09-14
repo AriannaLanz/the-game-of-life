@@ -56,6 +56,7 @@ Board.prototype.get = function (coords) {
  */
 Board.prototype.set = function(coords, value) {
   // TODO
+  this.cells[this.indexFor(coords)] = value; 
 }
 
 /**
@@ -65,6 +66,18 @@ Board.prototype.set = function(coords, value) {
  */
 Board.prototype.livingNeighbors = function([row, col]) {
   // TODO: Return the count of living neighbors.
+
+  //find neighbors
+
+
+  var sum1 = this.get([row + 1, col]) + this.get([row - 1, col]) + this.get([row, col + 1]) + this.get([row, col - 1]);
+  var sum2 = this.get([row + 1, col + 1]) + this.get([row - 1, col+1]) + this.get([row + 1, col - 1]) + this.get([row -1, col - 1]);
+  
+  return sum1 + sum2;
+  
+
+
+
 }
 
 /**
@@ -74,6 +87,11 @@ Board.prototype.livingNeighbors = function([row, col]) {
  */
 Board.prototype.toggle = function(coords) {
   // TODO
+  if (this.get(coords) === 0) {
+    this.set(coords, 1);
+  } else if (this.get(coords) === 1){
+    this.set(coords, 0);
+  }
 }
 
 /**
@@ -84,7 +102,17 @@ Board.prototype.toggle = function(coords) {
  * @param {Number} numLivingNeighbors 
  */
 function conway(isAlive, numLivingNeighbors) {
-  // TODO
+
+  if(isAlive && (numLivingNeighbors === 2 || numLivingNeighbors== 3)) {
+    return true;
+  }
+
+  if (isAlive === false && numLivingNeighbors === 3) {
+    return true;
+  }
+
+  return false; 
+
 }
 
 /**
@@ -96,6 +124,29 @@ function conway(isAlive, numLivingNeighbors) {
  * @param {(Boolean, Int) -> Boolean} rules (default: conway)
  */
 function tick(present, future, rules=conway) {
-  // TODO
+
+//for each cell
+//is it alive or dead?
+//how many living neighbors does it have
+//does it change in the next tick?
+//change it
+
+for (var i = 0; i  < present.length; i++) {
+  for (var j = 0; j < present.width; j++) {
+    var alive_present = false;
+    //var alive_future = false; 
+    if(present.get([i,j])=== 1) {
+      alive_present = true;  
+    }
+    var liveNeighbors = present.livingNeighbors([i,j]);
+
+    if (conway(alive_present, liveNeighbors)){
+      future.toggle([i][j]);
+    }
+  }
+}
+
+
+
   return [future, present]
 }
