@@ -130,23 +130,27 @@ function tick(present, future, rules=conway) {
 //how many living neighbors does it have
 //does it change in the next tick?
 //change it
-
-for (var i = 0; i  < present.length; i++) {
+//console.log(present.cells)
+for (var i = 0; i  < present.height; i++) {
+  //console.log(i);
   for (var j = 0; j < present.width; j++) {
     var alive_present = false;
     //var alive_future = false; 
     if(present.get([i,j])=== 1) {
       alive_present = true;  
     }
+   // console.log([i,j]);
     var liveNeighbors = present.livingNeighbors([i,j]);
 
-    if (conway(alive_present, liveNeighbors)){
-      future.toggle([i][j]);
+    if (rules(alive_present, liveNeighbors)){
+      future.toggle([i , j]);
     }
   }
 }
-
-
-
+//console.log(rules());
+//console.log(future.cells)
+ //console.log(Array.isArray([future, present]));
   return [future, present]
 }
+
+//console.log(rules());
