@@ -125,28 +125,19 @@ function conway(isAlive, numLivingNeighbors) {
  */
 function tick(present, future, rules=conway) {
 
-//for each cell
-//is it alive or dead?
-//how many living neighbors does it have
-//does it change in the next tick?
-//change it
-
-for (var i = 0; i  < present.length; i++) {
+for (var i = 0; i  < present.height; i++) {
   for (var j = 0; j < present.width; j++) {
-    var alive_present = false;
-    //var alive_future = false; 
-    if(present.get([i,j])=== 1) {
-      alive_present = true;  
-    }
-    var liveNeighbors = present.livingNeighbors([i,j]);
 
-    if (conway(alive_present, liveNeighbors)){
-      future.toggle([i][j]);
-    }
+      var alive_present = false;
+      if(present.get([i,j])=== 1) {
+        alive_present = true;  
+      }
+      var liveNeighbors = present.livingNeighbors([i,j]);
+       
+      if (rules(alive_present, liveNeighbors)){
+        future.toggle([i, j]);
+      }
   }
 }
-
-
-
-  return [future, present]
+  return [future, present];
 }

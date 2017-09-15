@@ -7,6 +7,16 @@ if (mainElement) {
     .addEventListener('click', game.step)
 
   // TODO: Connect other buttons.
+  document.getElementById('play_btn')
+  .addEventListener('click', game.play)
+
+  document.getElementById('reset_btn')
+  .addEventListener('click', game.random) 
+  
+  document.getElementById('clear_btn')
+  .addEventListener('click', game.clear)
+
+
 }
 
 function Life(container, width=12, height=12) {
@@ -50,9 +60,22 @@ function Life(container, width=12, height=12) {
     // FIXME: This currently always toggles cell (0, 0).
     // How do we get the coordinate of the cell that was clicked on?
     // HINT: https://developer.mozilla.org/en-US/docs/Web/API/Event/target
-    var cell = document.getElementById('0-0'); // ⬅️ Fix me
-    present.toggle(cell.coord)
-    paint()
+    //var cell = document.getElementById('0-0'); // ⬅️ Fix me 
+
+    document.addEventListener('click', function() {
+
+      var cell = event.target;
+      
+      present.toggle(cell.coord);
+
+      paint();
+  
+      //Modify if necessary
+
+    }); 
+
+    
+    
   }
 
   function paint() {
@@ -67,6 +90,20 @@ function Life(container, width=12, height=12) {
     // HINT:
     //   https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
     //   https://developer.mozilla.org/en-US/docs/Web/API/Element/getElementsByTagName
+
+    var cells = document.getElementsByTagName('td');
+
+    for (var i = 0; i < cells.length; i++) {
+      if (present.get(cells[i].coord) === 1) {
+        cells[i].classList.add('alive'); 
+      } else {
+        cells[i].classList.remove('alive');
+      }
+
+    }
+
+    //Probably needs adjustment
+
   }
 
   function step() {
@@ -103,6 +140,8 @@ function Life(container, width=12, height=12) {
     paint();
   }
 
+  var intervalID; 
+
   function play() {
     // TODO:
     // Start playing by running the `step` function    
@@ -110,20 +149,31 @@ function Life(container, width=12, height=12) {
     
     // HINT:
     // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval
+
+    intervalID = setInterval(step, 100);
   }
 
   function stop() {
     // TODO: Stop autoplay.
     // HINT:
     // https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/clearInterval
+    clearInterval(intervalID);
+    
   }
 
   function togglePlaying() {
     // TODO: If we're playing, stop. Otherwise, start playing.
+    var el = document.getElementById('play_btn');
+if (el.addEventListener()) {
+  stop();
+} else {
+  play();
+}
   }
 
   function clear() {
     // TODO: Clear the board
+    
   }
 
   function random() {
